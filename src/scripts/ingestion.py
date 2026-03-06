@@ -62,18 +62,23 @@ if __name__ == "__main__":
             .execute())
     
     ## TODO: Do something with id_collisions
+    print("Success")
+    print()
+    print("2. Standardizing Countries and departments")
 
-    print("2. Standardizing and departments")
+    std_countries = (db_connection
+        .schema('sources')
+        .rpc("standardize_country", {})
+        .execute()
+    )
+
     std_count_dpt = (db_connection
         .schema('sources')
         .rpc("department_correction", {})
         .execute())
-
-    print("3. Standardizing Dates")
-    std_dates = (db_connection
-        .schema('sources')
-        .rpc("standardize_joining_dates", {})
-        .execute())
+    
+    print("Success")
+    print()
 
     print("4. Standardizing Performance Rate")
     std_performance = (db_connection
@@ -82,14 +87,33 @@ if __name__ == "__main__":
         .execute()
     )
 
+    print("Success")
+    print()
     print("5. Fixing Invalid Age and Salary")
     clean_emp_data = (db_connection
         .schema('sources')
         .rpc("clean_employee_data", {})
         .execute())
 
+    print("Success")
+    print()
     print("6. Imputing Missing Data")
     impute = (db_connection
         .schema('sources')
         .rpc("impute_median_salary", {})
         .execute())
+    
+    duplicates = (db_connection
+                  .schema("sources")
+                  .rpc("remove_duplicates",{})
+                  .execute()
+    )
+
+    print("Success")
+    print()
+    print("CREATING NEW CLEAN_EMPLOYEES TABLE")
+    clean_creation_response = (db_connection
+        .schema('sources')
+        .rpc('create_clean_emp_tbl',{})
+        .execute()
+    )
