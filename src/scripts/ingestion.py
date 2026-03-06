@@ -35,9 +35,61 @@ if __name__ == "__main__":
 
     print(df.columns)
     
-    response = (db_connection
-                .schema('sources')
-                .table('employees')
-                .insert(json_data)
-                .execute()
+    try:
+        response = (db_connection
+                    .schema('sources')
+                    .table('employees')
+                    .insert(json_data)
+                    .execute()
+        )
+    except Exception as e:
+        print(e)
+    else:
+        print(response)
+
+    print()
+    print("Proceeding to data cleaning")
+    print("1. Removing duplicates")
+    duplicates = (db_connection
+                  .schema("sources")
+                  .rpc("remove_duplicates",{})
+                  .execute()
     )
+
+    id_collisions = (db_connection
+            .schema('sources')
+            .rpc("id_collisions", {})
+            .execute())
+    
+    ## TODO: Do something with id_collisions
+
+    print("2. Standardizing and departments")
+    std_count_dpt = (db_connection
+        .schema('sources')
+        .rpc("department_correction", {})
+        .execute())
+
+    print("3. Standardizing Dates")
+    std_dates = (db_connection
+        .schema('sources')
+        .rpc("standardize_joining_dates", {})
+        .execute())
+
+    print("4. Standardizing Performance Rate")
+    std_performance = (db_connection
+        .schema("sources")
+        .rpc("standardize_performance",{})
+        .execute()
+    )
+
+    print("5. Fixing Invalid Age and Salary")
+    clean_emp_data = (db_connection
+        .schema('sources')
+        .rpc("clean_employee_data", {})
+        .execute())
+
+    print("6. Imputing Missing Data")
+    impute = (db_connection
+        .schema('sources')
+        .rpc("impute_median_salary", {})
+        .execute())
