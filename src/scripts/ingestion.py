@@ -5,11 +5,12 @@ import json
 
 from pathlib import Path
 from src.utils.db_connection import DBConnection
+from src.utils.transformations import handle_duplicates
 from supabase import Client 
 
 if __name__ == "__main__":
     # connection to db
-    db_connection = DBConnection.client
+    db_connection = DBConnection.get_client()
 
     # read file
     data_dir = Path(os.getcwd()).joinpath('data','employee_data.csv')
@@ -97,7 +98,7 @@ if __name__ == "__main__":
 
     print("Success")
     print()
-    print("6. Imputing Missing Data")
+    print("6. Imputing Missing Data and finalizing dealing with duplicates")
     impute = (db_connection
         .schema('sources')
         .rpc("impute_median_salary", {})
@@ -109,6 +110,8 @@ if __name__ == "__main__":
                   .execute()
     )
 
+## TODO: Duplicate Ids and different persons to different Ids
+## TODO: Duplicate Ids with different salaries
     print("Success")
     print()
     print("CREATING NEW CLEAN_EMPLOYEES TABLE")
@@ -117,3 +120,23 @@ if __name__ == "__main__":
         .rpc('create_clean_emp_tbl',{})
         .execute()
     )
+    
+    db_connection = DBConnection.get_client()
+
+    handle_duplicates(db_connection=db_connection)
+
+    print('CREATING STAGING SCHEMA IF NOT EXISTS')
+    staging_init = (db_connection
+        .schema('sources')
+        .rpc('staging_init',{})
+        .execute()
+    )
+
+    print("CREATING 3NF TABLES AND POPULATING THEM")
+    norm_form = (db_connection
+        .schema('sources')
+        .rpc('norm_form', {})
+        .execute()
+    )
+
+    print("FINISHED")

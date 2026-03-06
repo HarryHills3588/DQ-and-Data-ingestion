@@ -6,5 +6,10 @@ class DBConnection(Client):
     load_dotenv()
     SUPABASE_URL = str(os.getenv("SUPABASE_URL"))
     SUPABASE_KEY = str(os.getenv("SUPABASE_KEY"))
-    
-    client = create_client(supabase_url=SUPABASE_URL,supabase_key=SUPABASE_KEY)
+
+    @staticmethod
+    def get_client():
+        return create_client(
+            supabase_url=DBConnection.SUPABASE_URL,
+            supabase_key=DBConnection.SUPABASE_KEY
+        )
