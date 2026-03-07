@@ -57,12 +57,6 @@ if __name__ == "__main__":
                   .execute()
     )
 
-    id_collisions = (db_connection
-            .schema('sources')
-            .rpc("id_collisions", {})
-            .execute())
-    
-    ## TODO: Do something with id_collisions
     print("Success")
     print()
     print("2. Standardizing Countries and departments")
@@ -110,8 +104,6 @@ if __name__ == "__main__":
                   .execute()
     )
 
-## TODO: Duplicate Ids and different persons to different Ids
-## TODO: Duplicate Ids with different salaries
     print("Success")
     print()
     print("CREATING NEW CLEAN_EMPLOYEES TABLE")
