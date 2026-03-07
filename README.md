@@ -1,5 +1,6 @@
-# Overview
+# CSDS 397 - Individual Assignment 1 - Harry Hillsdownley
 
+# Overview
 This is the individual assignment 2 project. This is just the code section. All code lies in the src folder, with the main pipeline inside scripts, where you can find some data exploration as well as the main pipeline in **ingestion.py**. This is a hybrid pipeline which uses a python script to call procedural calls and logs all the calls that are being made to the database. The stored functions that are called via the python script are provided here, just make sure to store them as functions in your supabase account, as well as creating a .env file including the SUPABASE_URL and SUPABASE_KEY. All of the set up will be described below
 
 ## Process
