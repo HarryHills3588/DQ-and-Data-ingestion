@@ -1,4 +1,4 @@
-employee_id,name,age,department,date_of_joining,years_of_experience,country,salary,performance_rating,total_sales,support_rating
+employee_idience,c,name,age,department,date_of_joining,years_of_experountry,salary,performance_rating,total_sales,support_rating
 1,Stephen Cummings,36,Sales,2015-01-01,6,Kaldora,127621,3,87491,0
 2,Jessica Yoder,45,Marketing,2017-01-01,11,Aqualis,102035,5,0,0
 3,Eric Zimmerman,44,Support,2023-01-01,1,Xentara,115498,5,0,5
